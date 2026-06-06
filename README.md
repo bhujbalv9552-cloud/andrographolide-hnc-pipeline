@@ -1,80 +1,111 @@
-# andrographolide-hnc-pipeline
-Network pharmacology and molecular docking pipeline for andrographolide in head and neck cancer
-# Andrographolide in Head and Neck Cancer
-## A Network Pharmacology Pipeline
+Andrographolide vs Head and Neck Cancer
+### A Network Pharmacology & Molecular Docking Pipeline
 
-**Author:** Vaibhav Bhujbal
-**Field:** Computational Biology / Zoology
-**Institution:** Maharashtra, India
+![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
+![Field](https://img.shields.io/badge/Field-Bioinformatics-blue)
+![Tools](https://img.shields.io/badge/Tools-STRING%20%7C%20Cytoscape%20%7C%20CB--Dock2-orange)
 
----
-
-## About This Project
-This project maps the potential targets of andrographolide
-(a compound from Andrographis paniculata plant) against 
-head and neck cancer using free online bioinformatics tools.
+**Author:** Vaibhav Bhujbal  
+**Field:** Computational Biology / Zoology  
+**Location:** Maharashtra, India  
+**Contact:** bhujbalv9553@gmail.com
 
 ---
 
-## Pipeline Steps
+## 📌 About This Project
+
+Andrographolide is a natural compound from *Andrographis paniculata*,
+a medicinal plant used in Ayurvedic medicine. This project uses free 
+online bioinformatics tools to systematically identify which cancer 
+proteins it may target in head and neck cancer (HNC) — and validates 
+those predictions against real Indian patient data.
+
+---
+
+## 🔬 Pipeline Overview
+Andrographolide → ADMET → Target Prediction → Disease Genes
+→ Common Targets (87) → PPI Network → Pathway Analysis
+→ Patient Validation (GEO) → Molecular Docking
+
+---
+
+## 📋 Step-by-Step Pipeline
 
 ### Step 1 — Drug Profiling
-- Tool: SwissADME, pkCSM
-- What I did: Checked if andrographolide is drug-like
-- Result: Passed all Lipinski criteria, zero violations
+| Item | Detail |
+|------|--------|
+| Tools | SwissADME, pkCSM |
+| Goal | Check oral drug-likeness |
+| Result | ✅ Passed all Lipinski criteria, 0 violations |
 
 ### Step 2 — Target Prediction
-- Tool: SwissTargetPrediction, SuperPred
-- What I did: Predicted which human proteins it may bind
-- Result: 207 putative targets
+| Item | Detail |
+|------|--------|
+| Tools | SwissTargetPrediction, SuperPred |
+| Goal | Predict human protein targets |
+| Result | 207 putative targets identified |
 
 ### Step 3 — Disease Gene Collection
-- Tool: GeneCards, OMIM, Open Targets Platform
-- What I did: Collected HNC-associated genes
-- Result: 17,020 disease genes
+| Item | Detail |
+|------|--------|
+| Tools | GeneCards, OMIM, Open Targets Platform |
+| Goal | Collect HNC-associated genes |
+| Result | 17,020 disease genes collected |
 
-### Step 4 — Finding Common Targets
-- Tool: Microsoft Excel (COUNTIF)
-- What I did: Found overlap between drug targets and disease genes
-- Result: 87 common targets
+### Step 4 — Common Target Identification
+| Item | Detail |
+|------|--------|
+| Tool | Microsoft Excel (COUNTIF) |
+| Goal | Find drug-disease gene overlap |
+| Result | **87 shared targets identified** |
 
-### Step 5 — PPI Network
-- Tool: STRING v12, Cytoscape v3.10
-- What I did: Built protein interaction network, found hub genes
-- Result: 10 hub genes including EGFR, CDK1, CHEK1, PPARG
+### Step 5 — PPI Network Construction
+| Item | Detail |
+|------|--------|
+| Tools | STRING v12.0, Cytoscape v3.10.2 |
+| Goal | Build protein interaction network, find hub genes |
+| Settings | Confidence score > 0.700 |
+| Result | 10 hub genes: EGFR, CDK1, CHEK1, PPARG, PTGS2, MAPK1, MAPK3, JAK2, MAPK14, CYP11B2 |
 
-### Step 6 — Pathway Analysis
-- Tool: Metascape
-- What I did: GO and KEGG enrichment of 87 targets
-- Result: Top pathway — Pathways in cancer (p=1e-16)
+### Step 6 — Pathway Enrichment Analysis
+| Item | Detail |
+|------|--------|
+| Tool | Metascape |
+| Goal | GO and KEGG pathway analysis |
+| Result | Top: Pathways in cancer (p = 1×10⁻¹⁶) |
 
 ### Step 7 — Patient Data Validation
-- Tool: GEO2R (NCBI)
-- Datasets: GSE23558 (Indian OSCC), GSE30784 (US OSCC)
-- What I did: Checked if hub genes are actually dysregulated in patients
-- Result: 8/10 hub genes significant in GSE30784
+| Item | Detail |
+|------|--------|
+| Tool | GEO2R — NCBI |
+| Datasets | GSE23558 (Indian OSCC), GSE30784 (US OSCC) |
+| Goal | Confirm hub genes are dysregulated in real patients |
+| Result | 8/10 hub genes significant in GSE30784 |
+
+> 💡 GSE23558 was chosen specifically because it contains
+> Indian OSCC patient data — directly relevant to India's 
+> high oral cancer burden.
 
 ### Step 8 — Molecular Docking
-- Tool: CB-Dock2
-- What I did: Docked andrographolide against 10 hub proteins
-- Result: Best binding to PPARG (-9.16 kcal/mol), CDK1 (-8.4 kcal/mol)
+| Item | Detail |
+|------|--------|
+| Tool | CB-Dock2 (AutoDock Vina) |
+| Mode | Blind docking |
+| Goal | Test andrographolide binding to hub proteins |
+| Result | All targets scored below −7.5 kcal/mol |
 
 ---
 
-## Key Results Summary
+## 📊 Key Results
 
-| Target | Expression in OSCC | Docking Score |
-|--------|-------------------|---------------|
-| EGFR   | Upregulated       | -7.9 kcal/mol |
-| CDK1   | Upregulated       | -8.4 kcal/mol |
-| CHEK1  | Upregulated       | -8.2 kcal/mol |
-| PPARG  | Downregulated     | -9.16 kcal/mol|
-| PTGS2  | Upregulated       | -8.9 kcal/mol |
+| Target | Role in HNC | Expression in OSCC | Docking (kcal/mol) |
+|--------|------------|-------------------|-------------------|
+| EGFR | Primary oncogenic driver | ⬆ Upregulated | −7.9 |
+| CDK1 | Cell cycle (G2/M) | ⬆ Upregulated | −8.4 |
+| CHEK1 | DNA damage checkpoint | ⬆ Upregulated | −8.2 |
+| PPARG | Tumour suppressor | ⬇ Downregulated | −9.16 |
+| PTGS2 | COX-2 / Inflammation | ⬆ Upregulated | −8.9 |
 
 ---
 
-## Files in This Repository
-- `data/` — target lists and gene sets
-- `results/` — docking scores, expression data
-- `figures/` — network, Venn diagram, docking images
-- `methods.md` — detailed tool settings used
+## 🗂️ Repository Structure
